@@ -2,6 +2,7 @@ from django.db import models
 
 
 class AutomobileVO(models.Model):
+    import_href = models.CharField(max_length=50, null=True)
     color = models.CharField(max_length=50)
     year = models.PositiveSmallIntegerField()
     vin = models.CharField(max_length=17, unique=True)
@@ -15,17 +16,17 @@ class Technician(models.Model):
     last_name = models.CharField(max_length=100)
     employee_id = models.CharField(max_length=100, unique=True)
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+    # def __str__(self):
+    #     return f"{self.first_name} {self.last_name}"
 
 
 class Appointment(models.Model):
     vin = models.CharField(max_length=17, unique=True)
     is_vip = models.BooleanField(default=False)
     customer = models.CharField(max_length=200)
-    date_time = models.DateTimeField(null=True)
+    date_time = models.DateTimeField()
     reason = models.CharField(max_length=200)
-    status = models.BooleanField(default=False)
+    status = models.CharField(max_length=200, default='created')
 
     technician = models.ForeignKey(
         Technician,

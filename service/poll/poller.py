@@ -27,6 +27,8 @@ def poll(repeat=True):
                     defaults = {
                         "vin": automobile["vin"],
                         "sold": automobile["sold"],
+                        "year": automobile["year"],
+                        "color": automobile["color"],
                     }
                 )
             pass
