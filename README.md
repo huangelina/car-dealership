@@ -6,8 +6,8 @@ Team:
 * Jay Parfenchuck - Sales microservice
 
 ### Set-Up Instructions
--THIS PROJECT REQUIRES DOCKER
--MAKE SURE YOU HAVE DOCKER, GIT, AND NODE.JS 18.2 OR ABOVE
+THIS PROJECT REQUIRES DOCKER
+MAKE SURE YOU HAVE DOCKER, GIT, AND NODE.JS 18.2 OR ABOVE
 
 1. Clone the repository to your local machine by running the following command in your terminal:
    ```git clone https://gitlab.com/huangelina03/project-beta.git```
