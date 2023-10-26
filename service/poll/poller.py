@@ -15,13 +15,10 @@ from service_rest.models import AutomobileVO
 
 def poll(repeat=True):
     while True:
-        print('Service poller polling for data')
         try:
             response = requests.get("http://project-beta-inventory-api-1:8000/api/automobiles/")
             content = json.loads(response.content)
-            print('this is poller')
             for automobile in content["autos"]:
-                print('this is poller in the for loop')
                 AutomobileVO.objects.update_or_create(
                     import_href=automobile["href"],
                     defaults = {

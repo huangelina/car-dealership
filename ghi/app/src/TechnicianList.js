@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 
 
 function TechnicianList() {
-    const [technicians, setSalespeople] = useState([]);
+    const [technicians, setTechnicians] = useState([]);
 
     const getData = async () => {
         const response = await fetch('http://localhost:8080/api/technicians/');
 
         if (response.ok) {
         const data = await response.json();
-        setSalespeople(data.technicians);
+        setTechnicians(data.technicians);
         }
     }
 
