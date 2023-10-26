@@ -2,6 +2,7 @@ from django.db import models
 
 
 class AutomobileVO(models.Model):
+    import_href = models.CharField(max_length=50, null=True)
     color = models.CharField(max_length=50)
     year = models.PositiveSmallIntegerField()
     vin = models.CharField(max_length=17, unique=True)
@@ -25,7 +26,7 @@ class Appointment(models.Model):
     customer = models.CharField(max_length=200)
     date_time = models.DateTimeField()
     reason = models.CharField(max_length=200)
-    status = models.BooleanField(default=False)
+    status = models.CharField(max_length=200, default='created')
 
     technician = models.ForeignKey(
         Technician,

@@ -100,11 +100,17 @@ def api_list_appointment(request):
         )
     else:
         content = json.loads(request.body)
+        print("this is content:", content)
         try:
             tech = content["technician"]
             technician = Technician.objects.get(employee_id=tech)
             content["technician"] = technician
             appointment = Appointment.objects.create(**content)
+            vin_num = content["vin"]
+            car_sold = AutomobileVO.objects.filter(vin=vin_num)
+            if len(car_sold) > 0:
+                appointment.is_vip = True
+                appointment.save()
             return JsonResponse(
                 appointment,
                 encoder=AppointmentListEncoder,

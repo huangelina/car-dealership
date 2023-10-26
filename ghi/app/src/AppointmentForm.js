@@ -17,10 +17,11 @@ function AppointmentForm() {
 const handleSubmit = async (e) => {
     e.preventDefault()
     const dateTime = `${date} ${time}`;
-    console.log(dateTime);
+    console.log("Selected Date and Time:", dateTime);
 
     const data = {};
     new FormData(e.target).forEach((value, key) => data[key] = value);
+    data['date_time'] = dateTime;
 
     const appointmentUrl = 'http://localhost:8080/api/appointments/';
     const fetchingConfig = {
@@ -78,7 +79,7 @@ useEffect(() => {
                     </div>
                     Time
                     <div className="mb-3">
-                      <input type="time" className="form-control" value={time} onChange={handleTimeChange} />
+                      <input type="time" className="form-control"value={time} onChange={handleTimeChange} />
                     </div>
                     Technician
                     <div className="mb-3">

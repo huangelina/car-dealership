@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+
 function formatDate(date) {
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, '0');
@@ -7,6 +8,7 @@ function formatDate(date) {
     const year = d.getFullYear();
     return `${month}/${day}/${year}`;
 }
+
 
 function formatTime(date) {
     const d = new Date(date);
@@ -17,6 +19,41 @@ function formatTime(date) {
     const formattedMinutes = minutes.toString().padStart(2, '0');
     return `${formattedHours}:${formattedMinutes}:00 ${ampm}`;
 }
+
+const cancelAppointment = async (id) => {
+  const appointmentUrl = `http://localhost:8080/api/appointments/${id}/`;
+  const fetchConfig = {
+    method: "PUT",
+    body: JSON.stringify({status: 'cancelled'}),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const response = await fetch(appointmentUrl, fetchConfig);
+  if (response.ok) {
+    console.log(response, "response ok");
+  } else {
+    console.log(response, "response not ok");
+  }
+  window.location.reload();
+}
+
+const finishAppointment = async (id) => {
+  const appointmentUrl = `http://localhost:8080/api/appointments/${id}/`;
+  const fetchConfig = {
+    method: "PUT",
+    body: JSON.stringify({status: 'finished'}),
+    headers: {
+        'Content-Type': 'application/json',
+    }
+};
+  const response = await fetch(appointmentUrl, fetchConfig);
+  if (response.ok) {
+    console.log(response);
+  }
+  window.location.reload();
+}
+
 
 function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
@@ -51,18 +88,29 @@ function AppointmentList() {
           </tr>
         </thead>
         <tbody>
-          {appointments.map(appointment => (
-            <tr key={appointment.id}>
-              <td>{appointment.vin}</td>
-              <td>{appointment.is_vip ? 'Yes' : 'No'}</td>
-              <td>{appointment.customer}</td>
-              <td>{formatDate(appointment.date_time)}</td>
-              <td>{formatTime(appointment.date_time)}</td>
-              <td>{appointment.technician.first_name} {appointment.technician.last_name}</td>
-              <td>{appointment.reason}</td>
-              <td>{appointment.last_name}</td>
-            </tr>
-          ))}
+          {appointments.map(appointment => {
+            if (appointment.status === 'cancelled') {
+              return null;
+            }
+            if (appointment.status === 'finished') {
+              return null;
+            }
+            return (
+              <tr key={appointment.id}>
+                <td>{appointment.vin}</td>
+                <td>{appointment.is_vip ? 'Yes' : 'No'}</td>
+                <td>{appointment.customer}</td>
+                <td>{formatDate(appointment.date_time)}</td>
+                <td>{formatTime(appointment.date_time)}</td>
+                <td>{appointment.technician.first_name} {appointment.technician.last_name}</td>
+                <td>{appointment.reason}</td>
+                <td>
+                  <button className="btn btn-sm btn-danger" onClick={() => cancelAppointment(appointment.id)}>Cancel</button>
+                  <button className="btn btn-sm btn-success" onClick={() => finishAppointment(appointment.id)}>Finish</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
