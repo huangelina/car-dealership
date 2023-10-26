@@ -19,6 +19,9 @@ Team:
 3. Once the Docker containers are up and running (this may take a few moments), navigate to http://localhost:3000/ in your browser to begin interacting with the site.
 ---
 ## CRUD Route Documentation
+
+### Automobile Sales
+
 #### Salesperson
 
 | HTTP Method | URL                                        | Purpose                                   |
