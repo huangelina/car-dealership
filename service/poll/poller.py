@@ -15,6 +15,7 @@ from service_rest.models import AutomobileVO
 
 def poll(repeat=True):
     while True:
+        print('Service poller polling for data')
         try:
             response = requests.get("http://project-beta-inventory-api-1:8000/api/automobiles/")
             content = json.loads(response.content)
