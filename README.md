@@ -7,6 +7,7 @@ Team:
 
 ### Set-Up Instructions
 -THIS PROJECT REQUIRES DOCKER
+-MAKE SURE YOU HAVE DOCKER, GIT, AND NODE.JS 18.2 OR ABOVE
 
 1. Clone the repository to your local machine by running the following command in your terminal:
    ```git clone https://gitlab.com/huangelina03/project-beta.git```
@@ -19,6 +20,210 @@ Team:
 3. Once the Docker containers are up and running (this may take a few moments), navigate to http://localhost:3000/ in your browser to begin interacting with the site.
 ---
 ## CRUD Route Documentation
+
+### Inventory
+
+#### Manufacturers
+| HTTP Method | URL                                                 | Purpose                                  |
+| ----------- | --------------------------------------------------- | ---------------------------------------- |
+| POST        | http://localhost:8100/api/manufacturers/            | Create a new manufacturer                |
+| GET         | http://localhost:8100/api/manufacturers/            | List all manufacturers                   |
+| GET         | http://localhost:8100/api/manufacturers/ID/         | List details for a specific manufacturer |
+| PUT         | http://localhost:8100/api/manufacturers/ID/         | Update a specific manufacturer's details |
+| DELETE      | http://localhost:8100/api/manufacturers/ID/         | Delete a specific manufacturer           |
+
+to create manufacturer POST this code into insomnia using JSON Body
+```
+{
+  "name": "Chrysler"
+}
+```
+It Should preview this after posting
+```
+{
+	"href": "/api/manufacturers/1/",
+	"id": 1,
+	"name": "Chrysler"
+}
+```
+Make one more manufacturer using post. Now use the GET to get the list of manufacturer. The preview would be similar to this.
+```
+{
+	"manufacturers": [
+		{
+			"href": "/api/manufacturers/1/",
+			"id": 1,
+			"name": "Chrysler"
+		},
+		{
+			"href": "/api/manufacturers/3/",
+			"id": 2,
+			"name": "Honda"
+		}
+	]
+}
+```
+
+#### Vehicle Models
+| HTTP Method | URL                                  | Purpose                                   |
+| ----------- | ------------------------------------ | ----------------------------------------- |
+| POST        | http://localhost:8100/api/models/    | Create a new vehicle model                |
+| GET         | http://localhost:8100/api/models/    | List all vehicle models                   |
+| GET         | http://localhost:8100/api/models/ID/ | List details for a specific vehicle model |
+| PUT         | http://localhost:8100/api/models/ID/ | Update a specific vehicle model's details |
+| DELETE      | http://localhost:8100/api/models/ID/ | Delete a specific vehicle model           |
+
+to create vehicle models POST this code into insomnia using JSON Body
+```
+{
+  "name": "Sebring",
+  "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg"
+  "manufacturer_id": 1
+}
+```
+
+Updating a vehicle model can take the name and/or picture URL
+```
+{
+  "name": "Sebring",
+  "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg"
+}
+```
+The preview should look like this
+
+```
+{
+  "href": "/api/models/1/",
+  "id": 1,
+  "name": "Sebring",
+  "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
+  "manufacturer": {
+    "href": "/api/manufacturers/1/",
+    "id": 1,
+    "name": "Chrysler"
+  }
+}
+```
+Getting a List of Vehicle Models
+```
+{
+  "models": [
+    {
+      "href": "/api/models/1/",
+      "id": 1,
+      "name": "Sebring",
+      "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
+      "manufacturer": {
+        "href": "/api/manufacturers/1/",
+        "id": 1,
+        "name": "Chrysler"
+      }
+    }
+  ]
+}
+```
+
+#### Automobiles
+| HTTP Method | URL                                        | Purpose                                   |
+| ----------- | ------------------------------------------ | ----------------------------------------- |
+| POST        | http://localhost:8100/api/automobiles/     | Create a new automobile                   |
+| GET         | http://localhost:8100/api/automobiles/     | List all automobiles                      |
+| GET         | http://localhost:8100/api/automobiles/VIN/ | List details for a specific automobile    |
+| PUT         | http://localhost:8100/api/automobiles/VIN/ | Update a specific automobile's details    |
+| DELETE      | http://localhost:8100/api/automobiles/VIN/ | Delete a specific automobile              |
+
+Create an automobile (SEND THIS JSON BODY):
+
+```
+{
+  "color": "red",
+  "year": 2012,
+  "vin": "1C3CC5FB2AN120174",
+  "model_id": 1
+}
+```
+The preview should look like this
+
+```
+{
+	"href": "/api/automobiles/1C3CC5FB2AN120174/",
+	"id": 1,
+	"color": "red",
+	"year": 2012,
+	"vin": "1C3CC5FB2AN120174",
+	"model": {
+		"href": "/api/models/1/",
+		"id": 1,
+		"name": "430i",
+		"picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
+		"manufacturer": {
+			"href": "/api/manufacturers/1/",
+			"id": 1,
+			"name": "BMW"
+		}
+	},
+    "sold": false
+}
+```
+To get the details of a specific automobile, you can query by its VIN:
+example url: http://localhost:8100/api/automobiles/1C3CC5FB2AN120174/
+
+```
+{
+  "href": "/api/automobiles/1C3CC5FB2AN120174/",
+  "id": 1,
+  "color": "green",
+  "year": 2011,
+  "vin": "1C3CC5FB2AN120174",
+  "model": {
+    "href": "/api/models/1/",
+    "id": 1,
+    "name": "Sebring",
+    "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
+    "manufacturer": {
+      "href": "/api/manufacturers/1/",
+      "id": 1,
+      "name": "Chrysler"
+    }
+  },
+  "sold": false
+}
+```
+You can update the color, year, and sold status of an automobile (SEND THIS JSON BODY):
+```
+{
+  "color": "red",
+  "year": 2012,
+  "sold": true
+}
+```
+Getting a list of automobiles returns a dictionary with the key "autos" set to a list of automobile information.:
+```
+{
+  "autos": [
+    {
+      "href": "/api/automobiles/1C3CC5FB2AN120174/",
+      "id": 1,
+      "color": "yellow",
+      "year": 2013,
+      "vin": "1C3CC5FB2AN120174",
+      "model": {
+        "href": "/api/models/1/",
+        "id": 1,
+        "name": "Sebring",
+        "picture_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Chrysler_Sebring_front_20090302.jpg/320px-Chrysler_Sebring_front_20090302.jpg",
+        "manufacturer": {
+          "href": "/api/manufacturers/1/",
+          "id": 1,
+          "name": "Chrysler"
+        }
+      },
+      "sold": false
+    }
+  ]
+}
+```
+
 
 ### Automobile Sales
 
@@ -38,6 +243,7 @@ to create salesperson POST this code into insomnia using JSON Body
 	"employee_id": 5467
 }
 ```
+
 It Should preview this after posting
 ```
 {
