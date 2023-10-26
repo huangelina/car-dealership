@@ -132,7 +132,7 @@ Getting a List of Vehicle Models
 | PUT         | http://localhost:8100/api/automobiles/VIN/ | Update a specific automobile's details    |
 | DELETE      | http://localhost:8100/api/automobiles/VIN/ | Delete a specific automobile              |
 
-Create an automobile (SEND THIS JSON BODY):
+to create manufacturer POST this code into insomnia using JSON Body
 
 ```
 {
@@ -189,7 +189,7 @@ example url: http://localhost:8100/api/automobiles/1C3CC5FB2AN120174/
   "sold": false
 }
 ```
-You can update the color, year, and sold status of an automobile (SEND THIS JSON BODY):
+You can update the color, year, and sold status of an automobile (SEND THIS JSON BODY)
 ```
 {
   "color": "red",
@@ -197,7 +197,7 @@ You can update the color, year, and sold status of an automobile (SEND THIS JSON
   "sold": true
 }
 ```
-Getting a list of automobiles returns a dictionary with the key "autos" set to a list of automobile information.:
+Getting a list of automobiles returns a dictionary with the key "autos" set to a list of automobile information
 ```
 {
   "autos": [
