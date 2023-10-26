@@ -230,16 +230,122 @@ Use the Delete function and put in the sales id number where it says :id in the 
 }
 ```
 
+### Automobile Services
 
+#### Technician
+
+| HTTP Method | URL                                        | Purpose                                   |
+| ----------- | ------------------------------------------ | ----------------------------------------- |
+| POST        | http://localhost:8080/api/technicians/     | Add a technician                     	   |
+| GET         | http://localhost:8080/api/technicians/     | List technician                   	       |
+| DELETE      | http://localhost:8080/api/technicians/:id/ | Delete a specific technician	           |
+
+POST code to create a technician
+```
+{
+	"first_name": "Jackie",
+	"last_name": "Welles",
+	"employee_id": "JWelles"
+}
+```
+POST preview after posting
+```
+{
+	"id": "1",
+	"first_name": "Jackie",
+	"last_name": "Welles",
+	"employee_id": "JWelles"
+}
+```
+
+When creating another technician make sure the technician ID is different from existing ones. Now use the GET to get the list of technicians. The preview would be similar to this.
+```
+{
+	"technicians": [
+		{
+			"id": "1",
+			"first_name": "Jeckie",
+			"last_name": "Welles",
+			"employee_id": "JWelles"
+		},
+		{
+			"id": "2",
+			"first_name": "Victor ",
+			"last_name": "Vektor",
+			"employee_id": "VVektor"
+		}
+	]
+}
+```
+
+Use the Delete function and put in the technician id where it says :id in the endpoint. For example http://localhost:8090/api/salespeople/1/. It should preview this after.
+{
+	"deleted": true
+}
+
+#### Appointment
+| HTTP Method | URL                                         | Purpose                                   |
+| ----------- | ------------------------------------------- | ----------------------------------------- |
+| POST        | http://localhost:8080/api/appointments/     | Add an appointment                     	|
+| GET         | http://localhost:8080/api/appointments/     | List appointments                   	    |
+| DELETE      | http://localhost:8080/api/appointments/:id/ | Delete a specific appointment	      	    |
+| PUT         | http://localhost:8080/api/appointments/:id/ | Edit a specific appointment	            |
+
+POST code to create an appointment. In the technician field put in the employee_id from technicians
+```
+{
+	"vin": "JTDKB20U777618125",
+	"customer": "John Doe",
+	"date_time":  "2023-07-25 10:00",
+	"status": "created",
+	"reason": "oil change",
+	"technician": "VVektor"
+}
+```
+POST preview after posting
+```
+{
+	"id": 1,
+	"vin": "JTDKB20U777618125",
+	"is_vip": false,
+	"customer": "John Doe",
+	"date_time": "2023-07-25 10:00",
+	"reason": "oil change",
+	"status": "created",
+	"technician": {
+		"id": 1,
+		"first_name": "Victor ",
+		"last_name": "Vektor",
+		"employee_id": "VVektor"
+	}
+}
+```
+Use the Delete function and put in the appointment id where it says :id in the endpoint. For example http://localhost:8090/api/salespeople/1/. It should preview this after.
+```
+{
+	"deleted": true
+}
+```
+PUT code to edit status of appointment. Status defaults to "created" you can use put method to change it to "cancelled" or "finished". The technician field is the technician id.
+```
+{
+	"vin": "JTDKB20U777618125",
+	"customer": "John Doe",
+	"date_time":  "2023-07-25 10:00",
+	"status": "cancelled",
+	"reason": "oil change",
+	"technician": "1"
+}
+```
 ## Design
+![Backend Diagram](./project-beta-diagram.png)
 
 ## Service microservice
 
-Explain your models and integration with the inventory
-microservice, here.
+The Service microservice allows the user to add and manage appointments. It also allows the user to add annd keep track of technicians. There are 3 models on the backend of the service microservice, AutomobileVO, Technician, and Appointment. Service uses poller to get data from the inventory. This ensures that the Service microservice has updated data on automobiles in the inventory.
 
 ## Sales microservice
 
-The sales microservice uses 4 models on the backend. These modes are AutomobileVO, Salesperson, Customer, and Sale. The sales microservice cannot be used without the other 3 models. You also need to make use of the inventory microservice to store info to make everything work. You make these two microservies interact by posting info into the inventory and in turn you can use that to make sales work. They do this by providing vechicle values to tell you which car is being sold.
+The sales microservice uses 4 models on the backend. These models are AutomobileVO, Salesperson, Customer, and Sale. The sales microservice cannot be used without the other 3 models. You also need to make use of the inventory microservice to store info to make everything work. You make these two microservies interact by posting info into the inventory and in turn you can use that to make sales work. They do this by providing vechicle values to tell you which car is being sold.
 
 The AutomobileVO is a value object that gets the data about the automobiles using a poller. It collects it from the inventory while using this method. The sales poller polls the inventory microservies data. When new data is entered the sales micro is updated.
